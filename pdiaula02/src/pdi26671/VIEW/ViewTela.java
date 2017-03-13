@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import pdi26671.CONTROL.CtrlGeral;
+import pdi26671.MODEL.Matrix;
 
 public class ViewTela{
 	private JFrame janela;
@@ -47,7 +48,40 @@ public class ViewTela{
 			int posx = (int) ((x+32)/32.0);
 			int posy = (int) ((y+32)/32.0);
 			System.out.println("Linha: " + posy + " Coluna: " + posx);
-			desenhaRect(posx, posy);
+			ctrl.pinta(posx-1, posy-1,corM, 1);
+			
+		}
+		public void mousePressed(MouseEvent e) 
+		{
+			
+			
+		}
+		public void mouseReleased(MouseEvent e) 
+		{
+			
+			
+		}
+		public void mouseEntered(MouseEvent e) 
+		{
+			
+			
+		}
+		public void mouseExited(MouseEvent e) 
+		{
+			
+			
+		}		
+	};
+	
+	MouseListener mlOpcoes2 = new MouseListener(){ 
+		public void mouseClicked(MouseEvent e)
+		{
+			int x = e.getX()-10;
+			int y = e.getY()-10;
+			int posx = (int) ((x+32)/32.0);
+			int posy = (int) ((y+32)/32.0);
+			System.out.println("Linha: " + posy + " Coluna: " + posx);
+			ctrl.pinta(posx-1, posy-1,corP, 2);
 			
 		}
 		public void mousePressed(MouseEvent e) 
@@ -109,6 +143,7 @@ public class ViewTela{
 	    botoesP.add(setP);
 	    botoesP.add(setCP);
 	    setM.addActionListener(ctrl.new drawM());
+	    setP.addActionListener(ctrl.new drawP());
 	    setCM.addActionListener(ctrl.new corM());
 	    setCP.addActionListener(ctrl.new corP());
 	    sliderMX.setMinorTickSpacing(1);
@@ -128,13 +163,23 @@ public class ViewTela{
 	    sliderPY.setPaintTicks(true);
 	    sliderPY.setPaintLabels(true);
 	    matriz.addMouseListener(mlOpcoes);
+	    template.addMouseListener(mlOpcoes2);
 	    janela.setVisible(true);
     }
     
-    public void limpa()
+    public void limpa(int i)
     {
-    	Graphics g = matriz.getGraphics();
-    	g.setColor(new Color(200,200,255));
+    	Graphics g;
+    	if(i==1) 
+		{
+    		g = matriz.getGraphics();
+    		g.setColor(new Color(200,200,255));
+		}
+    	else 
+    	{
+    		g = template.getGraphics();
+    		g.setColor(new Color(200,255,200));
+    	}    	
     	g.fillRect(0,0, 680, 600);
     }
     
@@ -143,13 +188,15 @@ public class ViewTela{
 		else this.corP = JColorChooser.showDialog(new JFrame(), "Selecione a cor", corP);
     }
     
-    public void desenhaM()
+    public void desenhaM(Matrix m, int c)
     {
-    	Graphics g = matriz.getGraphics();    	
+    	Graphics g;
+    	if(c==1)g = matriz.getGraphics();    	
+    	else g = template.getGraphics();    	
     	Graphics2D g2 = (Graphics2D) g;
     	g2.setStroke(new BasicStroke(2));
-    	int x = sliderMX.getValue();
-    	int y = sliderMY.getValue();
+    	int x = m.getH();
+    	int y = m.getW();
     	System.out.println(x + " " + y);
     	int px=10;
     	int py=10;
@@ -170,21 +217,40 @@ public class ViewTela{
     	}
     }
     
-    public void desenhaRect(int x, int y)
+    public void desenhaRect(Matrix m, int x)
     {
-    	if(x<=sliderMX.getValue() && y<=sliderMY.getValue())
-    	{     	
-	    	int px=10;
-	    	int py=10;
-	    	System.out.println(x + " " + y);
-	    	int posx = 10+((x-1)*32);
-	    	int posy = 10+((y-1)*32);
-	    	Graphics g = matriz.getGraphics();
-	    	System.out.println("Oi\n" + corM + " " + posx + " " + posy);
-	    	g.setColor(corM);
-	    	g.fillRect(posx, posy, 32, 32);
-	    	desenhaM();
+    	int h = m.getH();
+    	int w = m.getW();
+    	Graphics g;
+    	if(x==1)g = matriz.getGraphics();    	
+    	else g = template.getGraphics();
+    	for(int i=0; i<h; i++)
+    	{
+    		for(int j=0; j<w; j++)
+    		{
+    			g.setColor(m.getPixel(i, j));
+    			g.fillRect((10+(i*32)), (10+(j*32)), 32, 32);
+    		}
     	}
+    	
+    	desenhaM(m,x);    	
+    }
+    
+    public int getSMX()
+    {
+    	return sliderMX.getValue();
+    }
+    public int getSMY()
+    {
+    	return sliderMY.getValue();
+    }
+    public int getSPX()
+    {
+    	return sliderPX.getValue();
+    }
+    public int getSPY()
+    {
+    	return sliderPY.getValue();
     }
 
 }

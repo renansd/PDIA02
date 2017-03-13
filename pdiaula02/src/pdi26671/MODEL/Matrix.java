@@ -3,7 +3,7 @@ package pdi26671.MODEL;
 import java.awt.Color;
 
 public class Matrix {
-    public int h, w;
+    private int h, w;
     private Color[][] pixels;
     
     public Matrix(int h, int w) {
@@ -25,5 +25,14 @@ public class Matrix {
 		if(x >= 0 && x < this.h && y >= 0 && y < this.w) {
 		    pixels[x][y] = color;
 		}
+    }
+    
+    public int getH()
+    {
+    	return h;
+    }
+    public int getW()
+    {
+    	return w;
     }
 }

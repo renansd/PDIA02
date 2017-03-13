@@ -1,5 +1,6 @@
 package pdi26671.CONTROL;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +12,7 @@ import pdi26671.VIEW.ViewTela;
 public class CtrlGeral {
 	ViewTela view;
 	Matrix m;
+	Matrix p;
 	
 	public CtrlGeral()
 	{
@@ -22,18 +24,50 @@ public class CtrlGeral {
 		view = v;
 	}
 	
+	public void pinta(int x, int y, Color c, int i)
+	{
+		if(i==1)
+		{
+			m.setPixel(x, y, c);
+			view.desenhaRect(m,i);
+		}
+		else 
+		{
+			p.setPixel(x, y, c);
+			view.desenhaRect(p,i);
+		}
+		
+	}
+	
 	public class drawM implements ActionListener {
 		public void actionPerformed(ActionEvent event)
 		{
 			System.out.println("hey oh");
 			try {
-				view.limpa();
+				view.limpa(1);
 			}
 			catch(Exception e) {
 			 System.out.println("Fail");
 			}
 			finally {
-				view.desenhaM();
+				m = new Matrix(view.getSMX(), view.getSMY());
+				view.desenhaRect(m,1);
+			}			
+		}
+	}
+	public class drawP implements ActionListener {
+		public void actionPerformed(ActionEvent event)
+		{
+			System.out.println("hey oh");
+			try {
+				view.limpa(2);
+			}
+			catch(Exception e) {
+			 System.out.println("Fail");
+			}
+			finally {
+				p = new Matrix(view.getSPX(), view.getSPY());
+				view.desenhaRect(p,2);
 			}			
 		}
 	}
