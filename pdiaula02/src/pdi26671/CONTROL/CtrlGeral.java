@@ -13,10 +13,12 @@ public class CtrlGeral {
 	ViewTela view;
 	Matrix m;
 	Matrix p;
+	Matrix c;
+	CtrlMatriz cm;
 	
 	public CtrlGeral()
 	{
-		
+		cm = new CtrlMatriz();
 	}
 	
 	public void view(ViewTela v)
@@ -65,7 +67,7 @@ public class CtrlGeral {
 			catch(Exception e) {
 			 System.out.println("Fail");
 			}
-			finally {
+			finally {				
 				p = new Matrix(view.getSPX(), view.getSPY());
 				view.desenhaRect(p,2);
 			}			
@@ -81,6 +83,15 @@ public class CtrlGeral {
 		public void actionPerformed(ActionEvent event)
 		{
 			view.sctCor(2);	
+		}
+	}
+	
+	public class conMP implements ActionListener {
+		public void actionPerformed(ActionEvent event)
+		{
+			System.out.println("CtrlGeral");
+			c = cm.convolucao(m, p);
+			view.desenhaRtd(c);
 		}
 	}
 }

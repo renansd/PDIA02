@@ -24,11 +24,14 @@ import pdi26671.MODEL.Matrix;
 
 public class ViewTela{
 	private JFrame janela;
+	private JFrame janelaRtd;
 	private CtrlGeral ctrl;
 	JPanel matriz = new JPanel();
 	JPanel template = new JPanel();
     JPanel botoesM = new JPanel();
-    JPanel botoesP = new JPanel();    
+    JPanel botoesP = new JPanel();
+    JPanel botao = new JPanel();
+    JPanel Rtd = new JPanel();
     JSlider sliderMX = new JSlider(JSlider.HORIZONTAL, 0, 18, 0);
     JSlider sliderMY = new JSlider(JSlider.HORIZONTAL, 0, 18, 0);
     JSlider sliderPX = new JSlider(JSlider.HORIZONTAL, 0, 18, 0);
@@ -37,6 +40,7 @@ public class ViewTela{
     JButton setP = new JButton("Gerar Template");
     JButton setCM = new JButton("Cor Matriz");
     JButton setCP = new JButton("Cor Template");
+    JButton conMP = new JButton("Convolucao");
     Color corM = new Color(0,0,0);
     Color corP = new Color(0,0,0);
     
@@ -124,16 +128,19 @@ public class ViewTela{
 	    janela.add(template);
 	    janela.add(botoesM);
 	    janela.add(botoesP);
+	    janela.add(botao);
 	    matriz.setSize(new Dimension(680,600));
 	    template.setSize(new Dimension(680,600));	
-	    botoesM.setSize(new Dimension(683,168)); 
-	    botoesP.setSize(new Dimension(683,168)); 
+	    botoesM.setSize(new Dimension(683,68)); 
+	    botoesP.setSize(new Dimension(683,68));
+	    botao.setSize(new Dimension(1366,100));
 	    //botoesM.setLayout(new GridLayout(4,4));
 	    //botoesP.setLayout(new GridLayout(4,4));
 	    matriz.setLocation(0, 0);
 	    template.setLocation(686, 0);
 	    botoesM.setLocation(0, 600);
 	    botoesP.setLocation(683, 600);
+	    botao.setLocation(0, 668);
 	    botoesM.add(sliderMX);
 	    botoesM.add(sliderMY);
 	    botoesM.add(setM);
@@ -142,10 +149,12 @@ public class ViewTela{
 	    botoesP.add(sliderPY);
 	    botoesP.add(setP);
 	    botoesP.add(setCP);
+	    botao.add(conMP);
 	    setM.addActionListener(ctrl.new drawM());
 	    setP.addActionListener(ctrl.new drawP());
 	    setCM.addActionListener(ctrl.new corM());
 	    setCP.addActionListener(ctrl.new corP());
+	    conMP.addActionListener(ctrl.new conMP());
 	    sliderMX.setMinorTickSpacing(1);
 	    sliderMX.setMajorTickSpacing(5);
 	    sliderMX.setPaintTicks(true);
@@ -191,8 +200,9 @@ public class ViewTela{
     public void desenhaM(Matrix m, int c)
     {
     	Graphics g;
-    	if(c==1)g = matriz.getGraphics();    	
-    	else g = template.getGraphics();    	
+    	if (c==1) g = matriz.getGraphics();
+    	else if(c==2) g = template.getGraphics();  
+    	else g = Rtd.getGraphics(); 
     	Graphics2D g2 = (Graphics2D) g;
     	g2.setStroke(new BasicStroke(2));
     	int x = m.getH();
@@ -223,7 +233,8 @@ public class ViewTela{
     	int w = m.getW();
     	Graphics g;
     	if(x==1)g = matriz.getGraphics();    	
-    	else g = template.getGraphics();
+    	else if(x==2) g = template.getGraphics();
+    	else g = Rtd.getGraphics();
     	for(int i=0; i<h; i++)
     	{
     		for(int j=0; j<w; j++)
@@ -234,6 +245,18 @@ public class ViewTela{
     	}
     	
     	desenhaM(m,x);    	
+    }
+    
+    public void desenhaRtd(Matrix m)
+    {
+    	System.out.println("desenhaRtf");
+    	janelaRtd = new JFrame("26671 - Convolucao - Resultado");
+	    janelaRtd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    janelaRtd.setSize(680, 600);
+    	janelaRtd.setLayout(null);
+    	janelaRtd.add(Rtd);
+    	desenhaRect(m,3);
+    	janelaRtd.setVisible(true);
     }
     
     public int getSMX()
