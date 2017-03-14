@@ -239,6 +239,7 @@ public class ViewTela{
     	{
     		for(int j=0; j<w; j++)
     		{
+    			System.out.println(m.getPixel(i, j).getRed() + " " + m.getPixel(i, j).getGreen() + " " + m.getPixel(i, j).getBlue());
     			g.setColor(m.getPixel(i, j));
     			g.fillRect((10+(i*32)), (10+(j*32)), 32, 32);
     		}
@@ -250,13 +251,14 @@ public class ViewTela{
     public void desenhaRtd(Matrix m)
     {
     	System.out.println("desenhaRtf");
-    	janelaRtd = new JFrame("26671 - Convolucao - Resultado");
-	    janelaRtd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	janelaRtd = new JFrame("26671 - Convolucao - Resultado");	    
 	    janelaRtd.setSize(680, 600);
     	janelaRtd.setLayout(null);
     	janelaRtd.add(Rtd);
+    	Rtd.setBackground(new Color(255,200,200));
+    	Rtd.setSize(new Dimension(680,600));
+    	janelaRtd.setVisible(true); 
     	desenhaRect(m,3);
-    	janelaRtd.setVisible(true);
     }
     
     public int getSMX()

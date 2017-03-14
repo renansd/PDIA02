@@ -91,7 +91,7 @@ public class CtrlGeral {
 		{
 			System.out.println("CtrlGeral");
 			c = cm.convolucao(m, p);
-			view.desenhaRtd(c);
+			view.desenhaRtd(c);			
 		}
 	}
 }
