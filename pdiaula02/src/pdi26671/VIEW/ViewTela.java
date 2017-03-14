@@ -30,8 +30,7 @@ public class ViewTela{
 	JPanel template = new JPanel();
     JPanel botoesM = new JPanel();
     JPanel botoesP = new JPanel();
-    JPanel botao = new JPanel();
-    JPanel Rtd = new JPanel();
+    JPanel botao = new JPanel();    
     JSlider sliderMX = new JSlider(JSlider.HORIZONTAL, 0, 18, 0);
     JSlider sliderMY = new JSlider(JSlider.HORIZONTAL, 0, 18, 0);
     JSlider sliderPX = new JSlider(JSlider.HORIZONTAL, 0, 18, 0);
@@ -50,8 +49,7 @@ public class ViewTela{
 			int x = e.getX()-10;
 			int y = e.getY()-10;
 			int posx = (int) ((x+32)/32.0);
-			int posy = (int) ((y+32)/32.0);
-			System.out.println("Linha: " + posy + " Coluna: " + posx);
+			int posy = (int) ((y+32)/32.0);			
 			ctrl.pinta(posx-1, posy-1,corM, 1);
 			
 		}
@@ -83,8 +81,7 @@ public class ViewTela{
 			int x = e.getX()-10;
 			int y = e.getY()-10;
 			int posx = (int) ((x+32)/32.0);
-			int posy = (int) ((y+32)/32.0);
-			System.out.println("Linha: " + posy + " Coluna: " + posx);
+			int posy = (int) ((y+32)/32.0);			
 			ctrl.pinta(posx-1, posy-1,corP, 2);
 			
 		}
@@ -134,8 +131,6 @@ public class ViewTela{
 	    botoesM.setSize(new Dimension(683,68)); 
 	    botoesP.setSize(new Dimension(683,68));
 	    botao.setSize(new Dimension(1366,100));
-	    //botoesM.setLayout(new GridLayout(4,4));
-	    //botoesP.setLayout(new GridLayout(4,4));
 	    matriz.setLocation(0, 0);
 	    template.setLocation(686, 0);
 	    botoesM.setLocation(0, 600);
@@ -197,17 +192,16 @@ public class ViewTela{
 		else this.corP = JColorChooser.showDialog(new JFrame(), "Selecione a cor", corP);
     }
     
+    //Desenha as bordas da matriz
     public void desenhaM(Matrix m, int c)
     {
-    	Graphics g;
+    	Graphics g = matriz.getGraphics();
     	if (c==1) g = matriz.getGraphics();
-    	else if(c==2) g = template.getGraphics();  
-    	else g = Rtd.getGraphics(); 
+    	else if(c==2) g = template.getGraphics();      	
     	Graphics2D g2 = (Graphics2D) g;
     	g2.setStroke(new BasicStroke(2));
     	int x = m.getH();
-    	int y = m.getW();
-    	System.out.println(x + " " + y);
+    	int y = m.getW();    	
     	int px=10;
     	int py=10;
     	int tamx = x*32;
@@ -227,19 +221,18 @@ public class ViewTela{
     	}
     }
     
+    //Desenha as células da matriz
     public void desenhaRect(Matrix m, int x)
     {
     	int h = m.getH();
     	int w = m.getW();
-    	Graphics g;
+    	Graphics g = matriz.getGraphics();
     	if(x==1)g = matriz.getGraphics();    	
-    	else if(x==2) g = template.getGraphics();
-    	else g = Rtd.getGraphics();
+    	else if(x==2) g = template.getGraphics();    	
     	for(int i=0; i<h; i++)
     	{
     		for(int j=0; j<w; j++)
     		{
-    			System.out.println(m.getPixel(i, j).getRed() + " " + m.getPixel(i, j).getGreen() + " " + m.getPixel(i, j).getBlue());
     			g.setColor(m.getPixel(i, j));
     			g.fillRect((10+(i*32)), (10+(j*32)), 32, 32);
     		}
@@ -248,17 +241,10 @@ public class ViewTela{
     	desenhaM(m,x);    	
     }
     
+    //Cria um JPanel com override da função de pintar para apresentar o resultado da convolução
     public void desenhaRtd(Matrix m)
     {
-    	System.out.println("desenhaRtf");
-    	janelaRtd = new JFrame("26671 - Convolucao - Resultado");	    
-	    janelaRtd.setSize(680, 600);
-    	janelaRtd.setLayout(null);
-    	janelaRtd.add(Rtd);
-    	Rtd.setBackground(new Color(255,200,200));
-    	Rtd.setSize(new Dimension(680,600));
-    	janelaRtd.setVisible(true); 
-    	desenhaRect(m,3);
+    	MostraResultado janelaRtd = new MostraResultado(m);    	
     }
     
     public int getSMX()

@@ -8,7 +8,6 @@ public class CtrlMatriz {
 	
 	public Matrix convolucao(Matrix m, Matrix p)
 	{
-		System.out.println("CtrlMatriz");
 		Matrix rtd = new Matrix(m.getH(), m.getW());
 		int mh = m.getH();
 		int mw = m.getW();
